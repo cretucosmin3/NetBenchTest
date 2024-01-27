@@ -13,9 +13,9 @@ public class Program
     {
         if (!args.Any())
         {
-            Console.WriteLine("No command given.");
-            Console.Write("type 'server' or 'client':");
-            args = [Console.ReadLine()];
+            Console.Write("Press s = server or c = client...");
+            ConsoleKeyInfo key = Console.ReadKey();
+            args = new string[] { key.KeyChar.ToString() };
         }
 
         var command = args[0];

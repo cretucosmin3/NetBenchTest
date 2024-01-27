@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using NetBenchTest.Common;
 using NetBenchTest.Common.Utilities;
 using NetBenchTest.Networking.Transport;
 
@@ -20,8 +21,8 @@ public class Client
     private Stopwatch HeartbeatTimer = new Stopwatch();
     private Stopwatch ServerHeartbeatTimer = new Stopwatch();
 
-    private readonly byte[] SendBuffer = new byte[4096];
-    private readonly byte[] ReceiveBuffer = new byte[4096];
+    private readonly byte[] SendBuffer = new byte[ProjectSettings.MaxBufferSize];
+    private readonly byte[] ReceiveBuffer = new byte[ProjectSettings.MaxBufferSize];
 
     public bool Connected { get; private set; } = false;
 

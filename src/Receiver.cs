@@ -11,21 +11,10 @@ namespace NetBenchTest;
 
 public class Receiver
 {
-    private const string FileName = "received_data.bin";
-
     public Receiver()
     {
         Console.WriteLine($"Starting Server...");
         PrintLocalIPv4();
-
-        // Delete the existing file if it exists
-        if (File.Exists(FileName))
-        {
-            File.Delete(FileName);
-        }
-
-        // Create a new file to write to
-        using FileStream fileStream = new FileStream(FileName, FileMode.CreateNew, FileAccess.Write, FileShare.None);
 
         var server = new Server();
 
@@ -36,9 +25,6 @@ public class Receiver
         server.OnPacketReceived += (ManagedClient client, byte[] data) =>
         {
             totalByteCount += data.Length;
-
-            // Write the received data to the file
-            fileStream.Write(data, 0, data.Length);
 
             Console.Clear();
             Console.WriteLine($"Total {BytesUtil.WithSizeSuffix(totalByteCount)} Mb/s");
@@ -63,13 +49,15 @@ public class Receiver
         string hostName = Dns.GetHostName();
         var hostEntry = Dns.GetHostEntry(hostName);
 
+        Console.WriteLine(hostName);
+
         foreach (var ip in hostEntry.AddressList)
         {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-            {
-                Console.WriteLine("Local IPv4 Address: " + ip);
+            // if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+            // {
+                Console.WriteLine("::: " + ip);
                 break;
-            }
+            // }
         }
     }
 }

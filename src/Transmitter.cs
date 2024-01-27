@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using NetBenchTest.Common;
 using NetBenchTest.Common.Utilities;
 using NetBenchTest.Networking;
 using NetBenchTest.Networking.Transport;
@@ -9,7 +10,7 @@ namespace NetBenchTest;
 
 public class Transmitter
 {
-    private readonly string SERVER_IP = "127.0.0.1";
+    private readonly string SERVER_IP = ProjectSettings.IPV4;
     private readonly int PORT = 5000;
 
     private bool CanSendNext = true;
@@ -40,7 +41,7 @@ public class Transmitter
 
         client.OnConnectionEnded += (client) => Console.WriteLine("Connection ended");
 
-        byte[] SamplePacket = new byte[4095];
+        byte[] SamplePacket = new byte[ProjectSettings.MaxBufferSize - 1];
 
         client.OnPacketReceived += (Client client, byte[] data) =>
         {

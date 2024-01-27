@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using NetBenchTest.Common;
 
 namespace NetBenchTest.Networking;
 
@@ -16,9 +17,9 @@ public interface IManagedClient
     public void Send(byte[] bytes);
 }
 
-public class ManagedClient(TcpClient tcp) : IManagedClient
+public class ManagedClient : IManagedClient
 {
-    public TcpClient Tcp { get; } = tcp;
+    public TcpClient Tcp { get; set; }
 
     public bool Connected { get; private set; } = false;
     public int NetworkStateTicks { get; set; } = 5;
@@ -29,9 +30,15 @@ public class ManagedClient(TcpClient tcp) : IManagedClient
     private Stopwatch HeartbeatTimer = new Stopwatch();
     private Stopwatch ClientHeartbeatTimer = new Stopwatch();
 
-    private readonly NetworkStream m_Stream = tcp.GetStream();
+    private readonly NetworkStream m_Stream;
     private readonly byte[] m_SendBuffer = new byte[ProjectSettings.MaxBufferSize];
     private readonly byte[] m_ReceiveBuffer = new byte[ProjectSettings.MaxBufferSize];
+
+    public ManagedClient(TcpClient tcp)
+    {
+        Tcp = tcp;
+        m_Stream = tcp.GetStream();
+    }
 
     private TcpState GetState(TcpClient tcpClient)
     {
@@ -65,15 +72,6 @@ public class ManagedClient(TcpClient tcp) : IManagedClient
                     {
                         ReceivedHeartbeat();
                     }
-
-                    // if (ClientHeartbeatTimer.ElapsedMilliseconds > 4000)
-                    //     Connected = false;
-
-                    // if (HeartbeatTimer.ElapsedMilliseconds > 1500)
-                    // {
-                    //     HeartbeatTimer.Restart();
-                    //     Send([1]);
-                    // }
 
                     await Task.Delay(NetworkStateTicks);
                 }

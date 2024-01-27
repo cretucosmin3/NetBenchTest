@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using NetBenchTest.Common;
 using NetBenchTest.Common.Utilities;
 using NetBenchTest.Networking.Transport;
 
@@ -11,7 +12,7 @@ namespace NetBenchTest.Networking;
 public class Server
 {
     const int PORT_NO = 5000;
-    const string SERVER_IP = "127.0.0.1";
+    // const string SERVER_IP = ProjectSettings.IPV4;
 
     private List<ManagedClient> Clients = new List<ManagedClient>();
 
@@ -22,7 +23,7 @@ public class Server
 
     public void Start()
     {
-        IPAddress localAddress = IPAddress.Parse(SERVER_IP);
+        IPAddress localAddress = IPAddress.Parse(ProjectSettings.IPV4);
         Listener = new TcpListener(localAddress, PORT_NO);
         Listener.Start();
         isRunning = true;
