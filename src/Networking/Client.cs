@@ -80,7 +80,7 @@ public class Client
     {
         try
         {
-            Send([1]);
+            Send(new byte[] {1});
             HeartbeatTimer.Restart();
             ServerHeartbeatTimer.Restart();
 

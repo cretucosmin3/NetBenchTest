@@ -57,7 +57,7 @@ public class ManagedClient : IManagedClient
         {
             try
             {
-                Send([1]);
+                Send(new byte[] {1});
                 HeartbeatTimer.Restart();
                 ClientHeartbeatTimer.Restart();
 
@@ -93,7 +93,7 @@ public class ManagedClient : IManagedClient
 
     public void Stop()
     {
-        Send([0]);
+        Send(new byte[] {0});
         Tcp?.Close();
         Connected = false;
     }
